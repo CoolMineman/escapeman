@@ -21,6 +21,9 @@ import org.pmw.tinylog.Logger;
 public class EscapeMan {
     private long window;
 
+    public int deepcave;
+    public int titleOverlay;
+
     public void run() {
         Logger.info("Starting EscapeMan");
         Logger.info("LWGL Version " + Version.getVersion());
@@ -51,8 +54,9 @@ public class EscapeMan {
             }
         ).set();
         
-        if ( !glfwInit() )
-			throw new IllegalStateException("Unable to initialize GLFW");
+        if (!glfwInit()) {
+            throw new IllegalStateException("Unable to initialize GLFW");
+        }
 
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
@@ -86,17 +90,46 @@ public class EscapeMan {
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1); //v-sync
         glfwShowWindow(window);
+
+        GL.createCapabilities();
+
+        glEnable(GL_TEXTURE_2D);
+
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f); //black
+
+        deepcave = TextureManager.createTexture("deepcave.png");
+        titleOverlay = TextureManager.createTexture("title_overlay.png");
     }
 
     private void gameLoop() {
-        GL.createCapabilities();
-
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); //black
-
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            //TODO render stuff here
+            glBindTexture(GL_TEXTURE_2D, deepcave);
+
+            glBegin(GL_QUADS);
+                glTexCoord2f(0, 0);
+                glVertex2f(-1f, 1f);
+                glTexCoord2f(1, 0);
+                glVertex2f(1f, 1f);
+                glTexCoord2f(1, 1);
+                glVertex2f(1f, -1f);
+                glTexCoord2f(0, 1);
+                glVertex2f(-1f, -1f);
+            glEnd();
+
+            glBindTexture(GL_TEXTURE_2D, titleOverlay);
+
+            glBegin(GL_QUADS);
+                glTexCoord2f(0, 0);
+                glVertex2f(-1f, 1f);
+                glTexCoord2f(1, 0);
+                glVertex2f(1f, 1f);
+                glTexCoord2f(1, 1);
+                glVertex2f(1f, -1f);
+                glTexCoord2f(0, 1);
+                glVertex2f(-1f, -1f);
+            glEnd();
 
 			glfwSwapBuffers(window);
 
