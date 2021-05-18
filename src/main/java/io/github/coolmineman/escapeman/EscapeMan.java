@@ -19,14 +19,17 @@ import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Logger;
 
 public class EscapeMan {
+    public static final EscapeMan INSTANCE = new EscapeMan();
+
     private long window;
 
     public int deepcave;
     public int titleOverlay;
+    public Screen screen = new TitleScreen();
 
     public void run() {
         Logger.info("Starting EscapeMan");
-        Logger.info("LWGL Version " + Version.getVersion());
+        Logger.info("LWJGL Version " + Version.getVersion());
         init();
         gameLoop();
     }
@@ -68,6 +71,7 @@ public class EscapeMan {
         }
 
         glfwSetKeyCallback(window, this::keyCallback);
+        glfwSetMouseButtonCallback(window, this::mouseCallback);
 
         try (MemoryStack stack = stackPush()) {
 			IntBuffer pWidth = stack.mallocInt(1); // int*
@@ -105,31 +109,9 @@ public class EscapeMan {
 		while (!glfwWindowShouldClose(window)) {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            glBindTexture(GL_TEXTURE_2D, deepcave);
-
-            glBegin(GL_QUADS);
-                glTexCoord2f(0, 0);
-                glVertex2f(-1f, 1f);
-                glTexCoord2f(1, 0);
-                glVertex2f(1f, 1f);
-                glTexCoord2f(1, 1);
-                glVertex2f(1f, -1f);
-                glTexCoord2f(0, 1);
-                glVertex2f(-1f, -1f);
-            glEnd();
-
-            glBindTexture(GL_TEXTURE_2D, titleOverlay);
-
-            glBegin(GL_QUADS);
-                glTexCoord2f(0, 0);
-                glVertex2f(-1f, 1f);
-                glTexCoord2f(1, 0);
-                glVertex2f(1f, 1f);
-                glTexCoord2f(1, 1);
-                glVertex2f(1f, -1f);
-                glTexCoord2f(0, 1);
-                glVertex2f(-1f, -1f);
-            glEnd();
+            if (screen != null) {
+                screen.render();
+            }
 
 			glfwSwapBuffers(window);
 
@@ -141,10 +123,19 @@ public class EscapeMan {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
             glfwSetWindowShouldClose(window, true);
         }
+        if (screen != null) {
+            screen.keyCallback(keywindow, key, scancode, action, mods);
+        }
+    }
+
+    public void mouseCallback(long mousewindow, int button, int action, int mods) {
+        if (screen != null) {
+            screen.mouseCallback(mousewindow, button, action, mods);
+        }
     }
 
     public static void main(String[] args) {
         Configurator.defaultConfig().writingThread(true).formatPattern("{date} [{thread}] {level}: {message}").activate();
-        (new EscapeMan()).run();
+        INSTANCE.run();
     }
 }
