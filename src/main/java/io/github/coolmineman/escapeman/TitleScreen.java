@@ -7,8 +7,7 @@ public class TitleScreen implements Screen {
 
     @Override
     public void keyCallback(long keywindow, int key, int scancode, int action, int mods) {
-        // TODO Auto-generated method stub
-        
+        //noop
     }
 
     @Override

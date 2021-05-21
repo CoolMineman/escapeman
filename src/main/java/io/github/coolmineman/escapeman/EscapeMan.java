@@ -26,6 +26,8 @@ public class EscapeMan {
     public int deepcave;
     public int titleOverlay;
     public int tile1;
+    public int spikes;
+    public int player;
     public Screen screen = new TitleScreen();
 
     public void run() {
@@ -105,6 +107,8 @@ public class EscapeMan {
         deepcave = TextureManager.createTexture("deepcave.png");
         titleOverlay = TextureManager.createTexture("title_overlay.png");
         tile1 = TextureManager.createTexture("tile1.png");
+        spikes = TextureManager.createTexture("spikes.png");
+        player = TextureManager.createTexture("player.png");
     }
 
     private void gameLoop() {
