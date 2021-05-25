@@ -32,4 +32,8 @@ public class Level {
             throw Sneak.sneakyThrow(e);
         }
     }
+
+    public int getTile(int x, int y) {
+        return (x < 0 || x > world.length - 1 || y < 0 || y > world[x].length - 1) ? 0 : world[x][y];
+    }
 }

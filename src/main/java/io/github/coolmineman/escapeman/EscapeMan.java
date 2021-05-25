@@ -20,6 +20,7 @@ import org.pmw.tinylog.Logger;
 
 public class EscapeMan {
     public static final EscapeMan INSTANCE = new EscapeMan();
+    public static final double SEC_PER_TICK = 1.0/60.0;
 
     private long window;
 
@@ -29,6 +30,9 @@ public class EscapeMan {
     public int spikes;
     public int player;
     public Screen screen = new TitleScreen();
+
+    double lastFrameTime;
+    double steps = 0.0;
 
     public void run() {
         Logger.info("Starting EscapeMan");
@@ -109,10 +113,21 @@ public class EscapeMan {
         tile1 = TextureManager.createTexture("tile1.png");
         spikes = TextureManager.createTexture("spikes.png");
         player = TextureManager.createTexture("player.png");
+
+        lastFrameTime = glfwGetTime();
     }
 
     private void gameLoop() {
 		while (!glfwWindowShouldClose(window)) {
+            double loopStartTime = glfwGetTime();
+            double elapsed = loopStartTime - lastFrameTime;
+            lastFrameTime = loopStartTime;
+            steps += elapsed;
+            while (steps >= SEC_PER_TICK) {
+                if (screen != null) screen.tick();
+                steps -= SEC_PER_TICK;
+            }
+
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             if (screen != null) {

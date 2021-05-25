@@ -7,22 +7,37 @@ import org.lwjgl.glfw.GLFWVidMode;
 
 public class Level1Screen implements Screen {
     Level level = new Level("deepcave.txt");
-    Player player = new Player();
+    Player player = new Player(level);
+    boolean left;
+    boolean right;
+    boolean up;
 
     @Override
     public void keyCallback(long keywindow, int key, int scancode, int action, int mods) {
         if (key == GLFW_KEY_LEFT) {
-            player.x -= 0.01;
-        }
-        if (key == GLFW_KEY_RIGHT) {
-            player.x += 0.01;
+            left = action == GLFW_PRESS || action == GLFW_REPEAT;
+        } else if (key == GLFW_KEY_RIGHT) {
+            right = action == GLFW_PRESS || action == GLFW_REPEAT;
+        } else if (key == GLFW_KEY_UP) {
+            up = action == GLFW_PRESS || action == GLFW_REPEAT;
         }
     }
 
     @Override
+    public void tick() {
+        if (left && !right) {
+            player.velocityx = Math.min(player.velocityx, -0.02f);
+        }
+        if (right && !left) {
+            player.velocityx = Math.max(player.velocityx, 0.02f);
+        }
+        player.velocityy += up ? 0.1 : 0;
+        player.tick();
+    }
+
+    @Override
     public void mouseCallback(long mousewindow, int button, int action, int mods) {
-        // TODO Auto-generated method stub
-        
+        //noop
     }
 
     void drawTile(int x, int y, int tile) {
@@ -98,7 +113,7 @@ public class Level1Screen implements Screen {
         glScalef(maxSide / vidmode.width(), maxSide / vidmode.height(), 1);
         glTranslatef(0, -0.5f, 0);
         drawPlayer();
-        glTranslatef(-player.x, 0, 0);
+        glTranslatef(-player.x * 0.2f, 0, 0);
         for (int i = 0; i < level.world.length; i++) {
             for (int j = 0; j < level.world[i].length; j++) {
                 if (level.world[i][j] != 0) {
