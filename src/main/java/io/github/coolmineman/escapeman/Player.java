@@ -5,7 +5,7 @@ public class Player {
 
     public final Level level;
     public float x = 0;
-    public float y = 2;
+    public float y = 3;
     public float velocityx = 0;
     public float velocityy = 0;
 
@@ -23,12 +23,12 @@ public class Player {
 
         int minx = (int)targetminx;
         int maxx = (int)targetmaxx;
-        int miny = (int)targetminx;
+        int miny = (int)targetminy;
         int maxy = (int)targetmaxy;
 
         for (int i = minx; i <= maxx; i++) {
             for (int j = miny; j <= maxy; j++) {
-                int tile = level.getTile(j, i);
+                int tile = level.getTile(i, j);
                 boolean isSpikes = tile == EscapeMan.INSTANCE.spikes;
                 if (tile == 0) continue;
                 float tileminx = i;
