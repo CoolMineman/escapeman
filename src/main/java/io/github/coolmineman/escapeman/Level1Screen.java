@@ -26,12 +26,12 @@ public class Level1Screen implements Screen {
     @Override
     public void tick() {
         if (left && !right) {
-            player.velocityx = Math.min(player.velocityx, -0.02f);
+            player.velocityx = Math.min(player.velocityx, -0.05f);
         }
         if (right && !left) {
-            player.velocityx = Math.max(player.velocityx, 0.02f);
+            player.velocityx = Math.max(player.velocityx, 0.05f);
         }
-        player.velocityy += up ? 0.1 : 0;
+        if (player.velocityy == 0f && up) player.velocityy = 0.7f;
         player.tick();
     }
 

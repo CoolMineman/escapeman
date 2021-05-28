@@ -1,7 +1,7 @@
 package io.github.coolmineman.escapeman;
 
 public class Player {
-    public final static float GRAVITY = -0.05f;
+    public static final float GRAVITY = -0.05f;
 
     public final Level level;
     public float x = 0;
@@ -35,20 +35,39 @@ public class Player {
                 float tilemaxx = i + 1f;
                 float tileminy = j;
                 float tilemaxy = j + (isSpikes ? 0.3f : 1f);
-                if (targetmaxx > tileminx) velocityx = 0;
-                if (targetminx < tilemaxx) velocityx = 0;
-                if (targetmaxy > tileminy) velocityy = 0;
-                if (targetminy < tilemaxy) velocityy = 0;
+                boolean collidesY = targetmaxy - 0.1 > tileminy && targetminy + 0.1 < tilemaxy;
+                boolean collidesX = targetmaxx - 0.1 > tileminx && targetminx + 0.1 < tilemaxx;
+
+                if (targetminx < tilemaxx && targetmaxx > tileminx && collidesY) {
+                    velocityx = 0f;
+                    if (isSpikes) {
+                        die();
+                        return;
+                    }
+                }
+                if (targetmaxy > tileminy && targetminy < tilemaxy && collidesX) {
+                    velocityy = 0f;
+                    if (isSpikes) {
+                        die();
+                        return;
+                    }
+                }
             }
         }
 
         x += velocityx;
         y += velocityy;
 
-        velocityx *= 0.99f;
-        velocityy *= 0.99f;
+        velocityx *= 0.9f;
+        velocityy *= 0.9f;
 
-        //temp
-        if (y < 0) y = 0;
+        if (y < -5) die();
+    }
+
+    public void die() {
+        x = 0;
+        y = 3;
+        velocityx = 0;
+        velocityy = 0;
     }
 }

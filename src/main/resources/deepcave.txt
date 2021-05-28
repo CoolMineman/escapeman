@@ -1,6 +1,6 @@
-x             xx
                 
                 
                 
-x s             
-xxxxxxxxxxxxxxxx
+        x   s   
+  s   x   xxxx  
+xxxxx         
