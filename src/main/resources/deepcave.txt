@@ -1,6 +1,6 @@
-                
-                
-                
-        x   s   
-  s   x   xxxx  
-xxxxx         
+                                                                                                                                                                            
+                           s                                   x     x   xxx  xx  x  
+                         xxxxx                                 x x x x    x   x x x  
+        x   s        xxx                                        x x x    xxx  x  xx  
+  s   x   xxxx x xxx                      s       xxx                                
+xxxxx                           xxxxxxxxxxxxxxxxx      xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

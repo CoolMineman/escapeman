@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Level {
-    public int[][] world = new int[16][6];
+    public int[][] world = new int[86][6];
 
     public Level(String name) {
         try {
