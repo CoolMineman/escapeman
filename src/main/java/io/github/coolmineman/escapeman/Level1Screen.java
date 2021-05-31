@@ -61,7 +61,7 @@ public class Level1Screen implements Screen {
         glBindTexture(GL_TEXTURE_2D, EscapeMan.INSTANCE.deepcave);
 
         glPushMatrix();
-        float scroll = (player.x / 5f) % 2;
+        float scroll = (player.x / 10f) % 2;
         glTranslatef(-scroll, 0, 0);
         glBegin(GL_QUADS);
             glTexCoord2f(0, 0);
